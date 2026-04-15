@@ -33,7 +33,7 @@ The possible output formats are:
   - $y_m \leq x_i$ for every $i \leq m$
   - $\sum_{i \in I} x_i \leq |I|-1+y_m$
 And the objective function is to minimize $\sum_{m \in p} y_m$. 
-- `wcnf` file format. In this case, the problem is encoded as a weighted CNF formula (in the [DIMACS format](https://jix.github.io/varisat/manual/0.2.0/formats/dimacs.html)) as described in the paper. A monomial is encoded as $y_m \Rightleftarrow \bigwedge_{i \in I} x_i$ and $y_m$ is given a weight of $\alpha_m$; every other literal is given a $0$ weight. An algebraic model counting over the $(min,+)$-semiring then gives the desired value. 
+- `wcnf` file format. In this case, the problem is encoded as a weighted CNF formula (in the [DIMACS format](https://jix.github.io/varisat/manual/0.2.0/formats/dimacs.html)) as described in the paper. A monomial is encoded as $y_m \Leftrightarrow \bigwedge_{i \in I} x_i$ and $y_m$ is given a weight of $\alpha_m$; every other literal is given a $0$ weight. An algebraic model counting over the $(min,+)$-semiring then gives the desired value. 
 
 For convenience, we provide the `wcnf`, `lp` and `pip` representation of the Bernasconi instances from [POLIP](https://polip.zib.de/autocorrelated_sequences/) in the `example` directory.
 
