@@ -1,0 +1,10 @@
+Minimize
+obj: +1 z 
+Subject to
+interacting_sp@0: -1 z
+<= 0
+Bounds
+z free
+Binary
+
+End

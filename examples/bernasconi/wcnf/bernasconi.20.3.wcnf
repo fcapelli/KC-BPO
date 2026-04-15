@@ -1,0 +1,214 @@
+p cnf 58 94
+c Polynomial has 20 variables and 38 monomials
+c Original variables from 1 to 20
+c Monomials variables from 21 to 58
+c p weight 1 0 0
+c p weight -1 0 0
+c p weight 2 0 0
+c p weight -2 0 0
+c p weight 3 0 0
+c p weight -3 0 0
+c p weight 4 0 0
+c p weight -4 0 0
+c p weight 5 0 0
+c p weight -5 0 0
+c p weight 6 0 0
+c p weight -6 0 0
+c p weight 7 0 0
+c p weight -7 0 0
+c p weight 8 0 0
+c p weight -8 0 0
+c p weight 9 0 0
+c p weight -9 0 0
+c p weight 10 0 0
+c p weight -10 0 0
+c p weight 11 0 0
+c p weight -11 0 0
+c p weight 12 0 0
+c p weight -12 0 0
+c p weight 13 0 0
+c p weight -13 0 0
+c p weight 14 0 0
+c p weight -14 0 0
+c p weight 15 0 0
+c p weight -15 0 0
+c p weight 16 0 0
+c p weight -16 0 0
+c p weight 17 0 0
+c p weight -17 0 0
+c p weight 18 0 0
+c p weight -18 0 0
+c p weight 19 0 0
+c p weight -19 0 0
+c p weight 20 0 0
+c p weight -20 0 0
+c p weight 21 -4 0
+c p weight -21 0 0
+21 -20 0
+-21 20 0
+c p weight 22 -4 0
+c p weight -22 0 0
+22 -19 0
+-22 19 0
+c p weight 23 -8 0
+c p weight -23 0 0
+23 -18 0
+-23 18 0
+c p weight 24 -8 0
+c p weight -24 0 0
+24 -17 0
+-24 17 0
+c p weight 25 -8 0
+c p weight -25 0 0
+25 -16 0
+-25 16 0
+c p weight 26 -8 0
+c p weight -26 0 0
+26 -15 0
+-26 15 0
+c p weight 27 -8 0
+c p weight -27 0 0
+27 -14 0
+-27 14 0
+c p weight 28 -8 0
+c p weight -28 0 0
+28 -13 0
+-28 13 0
+c p weight 29 -8 0
+c p weight -29 0 0
+29 -12 0
+-29 12 0
+c p weight 30 -8 0
+c p weight -30 0 0
+30 -11 0
+-30 11 0
+c p weight 31 -8 0
+c p weight -31 0 0
+31 -10 0
+-31 10 0
+c p weight 32 -8 0
+c p weight -32 0 0
+32 -9 0
+-32 9 0
+c p weight 33 -8 0
+c p weight -33 0 0
+33 -8 0
+-33 8 0
+c p weight 34 -8 0
+c p weight -34 0 0
+34 -7 0
+-34 7 0
+c p weight 35 -8 0
+c p weight -35 0 0
+35 -6 0
+-35 6 0
+c p weight 36 -8 0
+c p weight -36 0 0
+36 -5 0
+-36 5 0
+c p weight 37 -8 0
+c p weight -37 0 0
+37 -4 0
+-37 4 0
+c p weight 38 -8 0
+c p weight -38 0 0
+38 -3 0
+-38 3 0
+c p weight 39 -4 0
+c p weight -39 0 0
+39 -2 0
+-39 2 0
+c p weight 40 -4 0
+c p weight -40 0 0
+40 -1 0
+-40 1 0
+c p weight 41 8 0
+c p weight -41 0 0
+41 -18 -20 0
+-41 18 0
+-41 20 0
+c p weight 42 8 0
+c p weight -42 0 0
+42 -17 -19 0
+-42 17 0
+-42 19 0
+c p weight 43 8 0
+c p weight -43 0 0
+43 -16 -18 0
+-43 16 0
+-43 18 0
+c p weight 44 8 0
+c p weight -44 0 0
+44 -15 -17 0
+-44 15 0
+-44 17 0
+c p weight 45 8 0
+c p weight -45 0 0
+45 -14 -16 0
+-45 14 0
+-45 16 0
+c p weight 46 8 0
+c p weight -46 0 0
+46 -13 -15 0
+-46 13 0
+-46 15 0
+c p weight 47 8 0
+c p weight -47 0 0
+47 -12 -14 0
+-47 12 0
+-47 14 0
+c p weight 48 8 0
+c p weight -48 0 0
+48 -11 -13 0
+-48 11 0
+-48 13 0
+c p weight 49 8 0
+c p weight -49 0 0
+49 -10 -12 0
+-49 10 0
+-49 12 0
+c p weight 50 8 0
+c p weight -50 0 0
+50 -9 -11 0
+-50 9 0
+-50 11 0
+c p weight 51 8 0
+c p weight -51 0 0
+51 -8 -10 0
+-51 8 0
+-51 10 0
+c p weight 52 8 0
+c p weight -52 0 0
+52 -7 -9 0
+-52 7 0
+-52 9 0
+c p weight 53 8 0
+c p weight -53 0 0
+53 -6 -8 0
+-53 6 0
+-53 8 0
+c p weight 54 8 0
+c p weight -54 0 0
+54 -5 -7 0
+-54 5 0
+-54 7 0
+c p weight 55 8 0
+c p weight -55 0 0
+55 -4 -6 0
+-55 4 0
+-55 6 0
+c p weight 56 8 0
+c p weight -56 0 0
+56 -3 -5 0
+-56 3 0
+-56 5 0
+c p weight 57 8 0
+c p weight -57 0 0
+57 -2 -4 0
+-57 2 0
+-57 4 0
+c p weight 58 8 0
+c p weight -58 0 0
+58 -1 -3 0
+-58 1 0
+-58 3 0
