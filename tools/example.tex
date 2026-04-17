@@ -1,9 +1,154 @@
 \documentclass{article}
 \usepackage{tikz}
 \usepackage{multicol}
+\usepackage{amsmath}
+
+\usetikzlibrary{graphdrawing, quotes}
+\usetikzlibrary{positioning}
+\usetikzlibrary{graphs}
+\usetikzlibrary{calc}
+\usegdlibrary{trees}
+\usegdlibrary{layered}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{shapes}
+
+\definecolor{LilleGreen}{HTML}{22A666} % Couleur verte univ
+\definecolor{LilleDarkBlue}{HTML}{5862ED} % bleu 2 univ
+\definecolor{LilleRed}{HTML}{FC535C}
+
+\tikzset{decision/.style={
+    circle,
+    draw=black,
+    fill=orange!30,
+    minimum width=0.75cm,
+    execute at begin node={$},
+    execute at end node={$}
+  }}
+
+\tikzset{empty/.style={
+    circle,
+    minimum width=0.75cm
+  }}
+
+\tikzset{times/.style={
+    circle,
+    draw=black,
+    fill=green!25,
+    execute at begin node = {$\times$},
+    minimum width=0.75cm
+  }}
+
+\tikzset{union/.style={
+    circle,
+    draw=black,
+    fill=orange!10,
+    execute at begin node = {$\cup$},
+    minimum width=0.75cm
+  }}
+\tikzset{uplus/.style={
+    circle,
+    draw=black,
+    fill=orange!20,
+    execute at begin node = {$\uplus$},
+    minimum width=0.75cm
+  }}
+
+
+\tikzset{wedge/.style={
+    circle,
+    draw=black,
+    fill=green!25,
+    execute at begin node = {$\wedge$},
+    minimum width=0.75cm
+  }}
+\tikzset{vee/.style={
+    circle,
+    draw=black,
+    fill=blue!25,
+    execute at begin node = {$\vee$},
+    minimum width=0.75cm
+  }}
+
+\tikzset{gate/.style={
+    circle,
+    draw=black,
+    execute at begin node = {$},
+    execute at end node={$},
+    minimum width=0.75cm
+  }}
+
+
+\tikzset{circuit/.style={
+    trapezium,
+    draw=black,
+    execute at begin node = {$},
+    execute at end node={$},
+  }}
+
+
+\tikzset{input/.style={
+  rectangle,
+  draw=black,
+  fill=gray!25,
+  execute at begin node={$},
+  execute at end node={$},
+  minimum width=0.5cm,
+  minimum height=0.5cm
+}}
+
+\tikzset{top/.style={
+    rectangle,
+    draw=black,
+    fill=LilleGreen!25,
+    execute at begin node={$\top$},
+    minimum width=0.5cm,
+    minimum height=0.5cm
+  }}
+
+\tikzset{bot/.style={
+    rectangle,
+    draw=black,
+    fill=LilleRed!25,
+    execute at begin node={$\bot$},
+    minimum width=0.5cm,
+    minimum height=0.5cm
+  }}
+
+\tikzset{cbot/.style={
+    rectangle,
+    draw=black,
+    fill=LilleRed!25,
+    minimum width=0.5cm,
+    minimum height=0.5cm,
+    execute at begin node={$},
+    execute at end node={$}
+  }}
+
+
+\tikzset{table/.style={
+    matrix of nodes,
+    row sep=-\pgflinewidth,
+    column sep=-\pgflinewidth,
+    nodes={
+      align=center,
+      font=\small
+    },
+    nodes in empty cells,
+    row 1/.style={
+      nodes={
+        font=\small\bfseries
+      }
+    }
+  }
+}
+
+\tikzset{nrel/.style={
+    rectangle,
+    font=\small\color{LilleDarkBlue}
+  }}
 
 \title{An example}
-\input{preamble.tex}
 
 \begin{document}
 \maketitle
@@ -11,106 +156,108 @@
 In this example, we consider the polynomial \[ p = -3x_1x_2+4x_4x_5+5x_2x_3x_4x_5x_6.\]
 Its multilinear set can be seen as the sets of satisfying assignments of the following Boolean formula: \[ F = \left(y_{1,2} \Leftrightarrow (x_1\wedge x_2)\right)\wedge \left(y_{4,5} \Leftrightarrow (x_4\wedge x_5)\right)\wedge \left(y_{2,3,4,5,6} \Leftrightarrow (x_2\wedge x_3\wedge x_4\wedge x_5\wedge x_6)\right).\]
 Encoded as the following CNF formula: \begin{align*} F = \left(y_{1,2} \vee \neg x_1\vee \neg x_2\right)\wedge \\(x_1 \vee  \neg y_{1,2})\wedge \\(x_2 \vee  \neg y_{1,2})\wedge \\\left(y_{4,5} \vee \neg x_4\vee \neg x_5\right)\wedge \\(x_4 \vee  \neg y_{4,5})\wedge \\(x_5 \vee  \neg y_{4,5})\wedge \\\left(y_{2,3,4,5,6} \vee \neg x_2\vee \neg x_3\vee \neg x_4\vee \neg x_5\vee \neg x_6\right)\wedge \\(x_2 \vee  \neg y_{2,3,4,5,6})\wedge \\(x_3 \vee  \neg y_{2,3,4,5,6})\wedge \\(x_4 \vee  \neg y_{2,3,4,5,6})\wedge \\(x_5 \vee  \neg y_{2,3,4,5,6})\wedge \\(x_6 \vee  \neg y_{2,3,4,5,6}).\end{align*}
-In the next sections, we give a smooth DNNF representing this Boolean function. Each gate is taged with a identifier. An extended formulation, extracted from the DNNF, is given in the last section. Variable $z_{i,j}$ denotes the variables associated to the edge from i to j.
+In the next sections, we give a smooth DNNF representing this Boolean function. In addition to their type ($\vee$, $\wedge$ or inputs), each gate is annotated with two colored values. The value in blue is an identifier for each node. The value in red is the smallest weight of a satisfying assignment of the gate. The optimal value for the input polynomial is hence the red value in the output node of the circuit. This values are computed bottom up: values for the inputs of the circuits are the weight of the corresponding literal. The value of a $\vee$-gate is the minimal value of its input. The value of a $\wedge$-gate is the sum of each value below. 
+
+An extended formulation, extracted from the DNNF, is given in the last section. Variable $z_{{i,j}}$ denotes the variables associated to the edge from node having identifier $i$ to node having identifier $j$.
 \section{A smooth DNNF}
 \resizebox{\columnwidth}{!}{
 \begin{tikzpicture}[>=stealth]
-     \graph [layered layout, grow=up, level distance=0.75in,
+     \graph [layered layout, grow=up, level distance=1in,
      sibling distance=0.5in, edge quotes={fill=background, inner sep=1.25pt, font=\ttfamily\scriptsize}]
      {
-N2 [as={\small: 2},vee];
-N28 [as={\small: 28},wedge];
-N27 [as=\neg x_{1}: {27}, input];
+N2 [as={\small: \textbf{\color{blue} 2}|\textbf{\color{red} -3}},vee];
+N28 [as={\small: \textbf{\color{blue} 28}|\textbf{\color{red} 0}},wedge];
+N27 [as=\neg x_{1}: {\textbf{\color{blue} 27}| \textbf{\color{red} 0}}, input];
 N27 -> N28;
-N29 [as=\neg y_{1,2}: {29}, input];
+N29 [as=\neg y_{1,2}: {\textbf{\color{blue} 29}| \textbf{\color{red} 0}}, input];
 N29 -> N28;
-N26 [as={\small: 26},vee];
-N63 [as={\small: 63},wedge];
-N30 [as=\neg x_{2}: {30}, input];
+N26 [as={\small: \textbf{\color{blue} 26}|\textbf{\color{red} 0}},vee];
+N63 [as={\small: \textbf{\color{blue} 63}|\textbf{\color{red} 0}},wedge];
+N30 [as=\neg x_{2}: {\textbf{\color{blue} 30}| \textbf{\color{red} 0}}, input];
 N30 -> N63;
-N32 [as=\neg y_{2,3,4,5,6}: {32}, input];
+N32 [as=\neg y_{2,3,4,5,6}: {\textbf{\color{blue} 32}| \textbf{\color{red} 0}}, input];
 N32 -> N63;
-N19 [as={\small: 19},vee];
-N66 [as={\small: 66},wedge];
-N33 [as=\neg x_{4}: {33}, input];
+N19 [as={\small: \textbf{\color{blue} 19}|\textbf{\color{red} 0}},vee];
+N66 [as={\small: \textbf{\color{blue} 66}|\textbf{\color{red} 0}},wedge];
+N33 [as=\neg x_{4}: {\textbf{\color{blue} 33}| \textbf{\color{red} 0}}, input];
 N33 -> N66;
-N35 [as=\neg y_{4,5}: {35}, input];
+N35 [as=\neg y_{4,5}: {\textbf{\color{blue} 35}| \textbf{\color{red} 0}}, input];
 N35 -> N66;
-N67 [as={\small: 67},vee];
-N38 [as=\neg x_{5}: {38}, input];
+N67 [as={\small: \textbf{\color{blue} 67}|\textbf{\color{red} 0}},vee];
+N38 [as=\neg x_{5}: {\textbf{\color{blue} 38}| \textbf{\color{red} 0}}, input];
 N38 -> N67;
-N40 [as=x_{5}: {40}, input];
+N40 [as=x_{5}: {\textbf{\color{blue} 40}| \textbf{\color{red} 0}}, input];
 N40 -> N67;
 N67 -> N66;
 N66 -> N19;
-N37 [as={\small: 37},wedge];
-N36 [as=x_{4}: {36}, input];
+N37 [as={\small: \textbf{\color{blue} 37}|\textbf{\color{red} 0}},wedge];
+N36 [as=x_{4}: {\textbf{\color{blue} 36}| \textbf{\color{red} 0}}, input];
 N36 -> N37;
-N20 [as={\small: 20},vee];
-N39 [as={\small: 39},wedge];
+N20 [as={\small: \textbf{\color{blue} 20}|\textbf{\color{red} 0}},vee];
+N39 [as={\small: \textbf{\color{blue} 39}|\textbf{\color{red} 0}},wedge];
 N38 -> N39;
 N35 -> N39;
 N39 -> N20;
-N41 [as={\small: 41},wedge];
+N41 [as={\small: \textbf{\color{blue} 41}|\textbf{\color{red} 4}},wedge];
 N40 -> N41;
-N42 [as=y_{4,5}: {42}, input];
+N42 [as=y_{4,5}: {\textbf{\color{blue} 42}| \textbf{\color{red} 4}}, input];
 N42 -> N41;
 N41 -> N20;
 N20 -> N37;
 N37 -> N19;
 N19 -> N63;
-N64 [as={\small: 64},vee];
-N53 [as=\neg x_{6}: {53}, input];
-N53 -> N64;
-N55 [as=x_{6}: {55}, input];
-N55 -> N64;
+N64 [as={\small: \textbf{\color{blue} 64}|\textbf{\color{red} 0}},vee];
+N45 [as=\neg x_{3}: {\textbf{\color{blue} 45}| \textbf{\color{red} 0}}, input];
+N45 -> N64;
+N47 [as=x_{3}: {\textbf{\color{blue} 47}| \textbf{\color{red} 0}}, input];
+N47 -> N64;
 N64 -> N63;
-N65 [as={\small: 65},vee];
-N45 [as=\neg x_{3}: {45}, input];
-N45 -> N65;
-N47 [as=x_{3}: {47}, input];
-N47 -> N65;
+N65 [as={\small: \textbf{\color{blue} 65}|\textbf{\color{red} 0}},vee];
+N53 [as=\neg x_{6}: {\textbf{\color{blue} 53}| \textbf{\color{red} 0}}, input];
+N53 -> N65;
+N55 [as=x_{6}: {\textbf{\color{blue} 55}| \textbf{\color{red} 0}}, input];
+N55 -> N65;
 N65 -> N63;
 N63 -> N26;
-N44 [as={\small: 44},wedge];
-N43 [as=x_{2}: {43}, input];
+N44 [as={\small: \textbf{\color{blue} 44}|\textbf{\color{red} 0}},wedge];
+N43 [as=x_{2}: {\textbf{\color{blue} 43}| \textbf{\color{red} 0}}, input];
 N43 -> N44;
-N5 [as={\small: 5},vee];
-N68 [as={\small: 68},wedge];
+N5 [as={\small: \textbf{\color{blue} 5}|\textbf{\color{red} 0}},vee];
+N68 [as={\small: \textbf{\color{blue} 68}|\textbf{\color{red} 0}},wedge];
 N45 -> N68;
 N32 -> N68;
 N19 -> N68;
-N64 -> N68;
+N65 -> N68;
 N68 -> N5;
-N48 [as={\small: 48},wedge];
+N48 [as={\small: \textbf{\color{blue} 48}|\textbf{\color{red} 0}},wedge];
 N47 -> N48;
-N6 [as={\small: 6},vee];
-N69 [as={\small: 69},wedge];
+N6 [as={\small: \textbf{\color{blue} 6}|\textbf{\color{red} 0}},vee];
+N69 [as={\small: \textbf{\color{blue} 69}|\textbf{\color{red} 0}},wedge];
 N33 -> N69;
 N32 -> N69;
 N35 -> N69;
 N67 -> N69;
-N64 -> N69;
+N65 -> N69;
 N69 -> N6;
-N50 [as={\small: 50},wedge];
+N50 [as={\small: \textbf{\color{blue} 50}|\textbf{\color{red} 0}},wedge];
 N36 -> N50;
-N7 [as={\small: 7},vee];
-N70 [as={\small: 70},wedge];
+N7 [as={\small: \textbf{\color{blue} 7}|\textbf{\color{red} 0}},vee];
+N70 [as={\small: \textbf{\color{blue} 70}|\textbf{\color{red} 0}},wedge];
 N38 -> N70;
 N32 -> N70;
 N35 -> N70;
-N64 -> N70;
+N65 -> N70;
 N70 -> N7;
-N52 [as={\small: 52},wedge];
+N52 [as={\small: \textbf{\color{blue} 52}|\textbf{\color{red} 4}},wedge];
 N40 -> N52;
-N9 [as={\small: 9},vee];
-N54 [as={\small: 54},wedge];
+N9 [as={\small: \textbf{\color{blue} 9}|\textbf{\color{red} 0}},vee];
+N54 [as={\small: \textbf{\color{blue} 54}|\textbf{\color{red} 0}},wedge];
 N53 -> N54;
 N32 -> N54;
 N54 -> N9;
-N56 [as={\small: 56},wedge];
+N56 [as={\small: \textbf{\color{blue} 56}|\textbf{\color{red} 5}},wedge];
 N55 -> N56;
-N57 [as=y_{2,3,4,5,6}: {57}, input];
+N57 [as=y_{2,3,4,5,6}: {\textbf{\color{blue} 57}| \textbf{\color{red} 5}}, input];
 N57 -> N56;
 N56 -> N9;
 N9 -> N52;
@@ -124,11 +271,11 @@ N5 -> N44;
 N44 -> N26;
 N26 -> N28;
 N28 -> N2;
-N59 [as={\small: 59},wedge];
-N58 [as=x_{1}: {58}, input];
+N59 [as={\small: \textbf{\color{blue} 59}|\textbf{\color{red} -3}},wedge];
+N58 [as=x_{1}: {\textbf{\color{blue} 58}| \textbf{\color{red} 0}}, input];
 N58 -> N59;
-N3 [as={\small: 3},vee];
-N71 [as={\small: 71},wedge];
+N3 [as={\small: \textbf{\color{blue} 3}|\textbf{\color{red} -3}},vee];
+N71 [as={\small: \textbf{\color{blue} 71}|\textbf{\color{red} 0}},wedge];
 N30 -> N71;
 N32 -> N71;
 N19 -> N71;
@@ -136,10 +283,10 @@ N29 -> N71;
 N64 -> N71;
 N65 -> N71;
 N71 -> N3;
-N61 [as={\small: 61},wedge];
+N61 [as={\small: \textbf{\color{blue} 61}|\textbf{\color{red} -3}},wedge];
 N43 -> N61;
 N5 -> N61;
-N62 [as=y_{1,2}: {62}, input];
+N62 [as=y_{1,2}: {\textbf{\color{blue} 62}| \textbf{\color{red} -3}}, input];
 N62 -> N61;
 N61 -> N3;
 N3 -> N59;
@@ -153,8 +300,8 @@ $z_{(63, 26)}+z_{(44, 26)} = z_{(26, 28)}$\\
 $z_{(66, 19)}+z_{(37, 19)} = z_{(19, 68)}+z_{(19, 71)}+z_{(19, 63)}$\\ 
 $z_{(38, 67)}+z_{(40, 67)} = z_{(67, 66)}+z_{(67, 69)}$\\ 
 $z_{(39, 20)}+z_{(41, 20)} = z_{(20, 37)}$\\ 
-$z_{(53, 64)}+z_{(55, 64)} = z_{(64, 68)}+z_{(64, 69)}+z_{(64, 70)}+z_{(64, 71)}+z_{(64, 63)}$\\ 
-$z_{(45, 65)}+z_{(47, 65)} = z_{(65, 71)}+z_{(65, 63)}$\\ 
+$z_{(45, 64)}+z_{(47, 64)} = z_{(64, 71)}+z_{(64, 63)}$\\ 
+$z_{(53, 65)}+z_{(55, 65)} = z_{(65, 68)}+z_{(65, 69)}+z_{(65, 70)}+z_{(65, 71)}+z_{(65, 63)}$\\ 
 $z_{(68, 5)}+z_{(48, 5)} = z_{(5, 44)}+z_{(5, 61)}$\\ 
 $z_{(69, 6)}+z_{(50, 6)} = z_{(6, 48)}$\\ 
 $z_{(70, 7)}+z_{(52, 7)} = z_{(7, 50)}$\\ 
@@ -183,20 +330,20 @@ $z_{(5, 44)} = z_{(44, 26)}$\\
 $z_{(45, 68)} = z_{(68, 5)}$\\ 
 $z_{(32, 68)} = z_{(68, 5)}$\\ 
 $z_{(19, 68)} = z_{(68, 5)}$\\ 
-$z_{(64, 68)} = z_{(68, 5)}$\\ 
+$z_{(65, 68)} = z_{(68, 5)}$\\ 
 $z_{(47, 48)} = z_{(48, 5)}$\\ 
 $z_{(6, 48)} = z_{(48, 5)}$\\ 
 $z_{(33, 69)} = z_{(69, 6)}$\\ 
 $z_{(32, 69)} = z_{(69, 6)}$\\ 
 $z_{(35, 69)} = z_{(69, 6)}$\\ 
 $z_{(67, 69)} = z_{(69, 6)}$\\ 
-$z_{(64, 69)} = z_{(69, 6)}$\\ 
+$z_{(65, 69)} = z_{(69, 6)}$\\ 
 $z_{(36, 50)} = z_{(50, 6)}$\\ 
 $z_{(7, 50)} = z_{(50, 6)}$\\ 
 $z_{(38, 70)} = z_{(70, 7)}$\\ 
 $z_{(32, 70)} = z_{(70, 7)}$\\ 
 $z_{(35, 70)} = z_{(70, 7)}$\\ 
-$z_{(64, 70)} = z_{(70, 7)}$\\ 
+$z_{(65, 70)} = z_{(70, 7)}$\\ 
 $z_{(40, 52)} = z_{(52, 7)}$\\ 
 $z_{(9, 52)} = z_{(52, 7)}$\\ 
 $z_{(42, 52)} = z_{(52, 7)}$\\ 
@@ -219,8 +366,8 @@ $z_{(62, 61)} = z_{(61, 3)}$
 $z_{(40, 41)}+z_{(40, 67)}+z_{(40, 52)} = 1$\\ 
 $z_{(36, 50)}+z_{(36, 37)} = 1$\\ 
 $z_{(42, 8)}+z_{(42, 41)}+z_{(42, 52)} = 1$\\ 
-$z_{(55, 56)}+z_{(55, 64)} = 1$\\ 
-$z_{(47, 48)}+z_{(47, 65)} = 1$\\ 
+$z_{(47, 48)}+z_{(47, 64)} = 1$\\ 
+$z_{(55, 56)}+z_{(55, 65)} = 1$\\ 
 $z_{(43, 44)}+z_{(43, 61)} = 1$\\ 
 $z_{(57, 56)} = 1$\\ 
 $z_{(58, 59)} = 1$\\ 

@@ -35,7 +35,7 @@ The possible output formats are:
 And the objective function is to minimize $\sum_{m \in p} y_m$. 
 - `wcnf` file format. In this case, the problem is encoded as a weighted CNF formula (in the [DIMACS format](https://jix.github.io/varisat/manual/0.2.0/formats/dimacs.html)) as described in the paper. A monomial is encoded as $y_m \Leftrightarrow \bigwedge_{i \in I} x_i$ and $y_m$ is given a weight of $\alpha_m$; every other literal is given a $0$ weight. An algebraic model counting over the $(min,+)$-semiring then gives the desired value. 
 
-For convenience, we provide the `wcnf`, `lp` and `pip` representation of the Bernasconi instances from [POLIP](https://polip.zib.de/autocorrelated_sequences/) in the `example` directory.
+For convenience, we provide the `wcnf`, `lp` and `pip` representation of the Bernasconi instances from [POLIP]in the `example` directory. Since the polynomials from the Bernasconi instances have been extracted from the [POLIP website](https://polip.zib.de/autocorrelated_sequences/), we also provide a crude script [`tools/pip2poly.py`](tools/pip2poly.py) for extracting the polynomial from this specific instances. We insist on the fact that this script is really adhoc and does not work on any `pip` file. 
 
 ## Using Knowledge Compilation
 
@@ -57,10 +57,7 @@ We provide a script `tools/compile.py` which implements a very unoptimized versi
 python3 tools/compile.py input-polynomial.poly
 ```
 
-This script outputs on `stdout` a json representation of a DNNF computing the multilinear polytope of the input polynomial. This json representation may be used to:
-
-- Export the DNNF to a [graphviz](https://graphviz.org/) file for visualization purpose using `dnnf2dot.py`. The circuit is also annotated with the weight of the minimal model of each gate, showing how the dynamic programming works on DNNF to compute the minimal model. To build a PDF for the figure from the output `dnnf.dot` of `dnnf2dot.py`, use `dot -Tpdf dnnf.dot > dnnf.pdf` (**todo**)
-- Compute an extended formulation of the multilinear polytope of size linear in the circuit using `extended.py` (**todo**),
+This script outputs on `stdout` a json representation of a DNNF computing the multilinear polytope of the input polynomial. This json representation may then be passed to `example.py` (either on the standard output or via a file). It generates a LaTeX document (which can be compiled using LuaLateX) containing a summary of the input polynomial, its encoding in CNF formula, a graphic representation of a smooth DNNF representing it and an extended formulation extracted from the DNNF. The example from the paper $p = -3x_1x_2+4x_4x_5+5x_2x_3x_4x_5x_6$ is directy provided in `tools/example.poly`. 
 
 ### A modified version of d4
 

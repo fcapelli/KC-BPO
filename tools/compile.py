@@ -18,13 +18,13 @@ def poly2cnf(p):
     weights = {}
     n = p["nvar"] #max([max(m) for m in p])
     for i in range(n):
-        names[i+1] = f"x{i+1}"
-        weights[f"x{i+1}"] = (0,0)
+        names[i+1] = f"x_{{{i+1}}}"
+        weights[f"x_{{{i+1}}}"] = (0,0)
     lm = 1
     cnf = []
     for m in p["poly"]:
         y = n+lm
-        ny = f"y{','.join(map(str,m[1]))}"
+        ny = f"y_{{{','.join(map(str,m[1]))}}}"
         names[y] = ny
         weights[ny] = (0,m[0])
         rp = [-i for i in m[1]]
@@ -179,7 +179,7 @@ def main():
     cnf,names,weights = poly2cnf(p)
     r={}
     root = dpll(cnf,names,[],r)
-    print(json.dumps({"root" : root, "nodes": r["nodes"], "weights": weights}, indent=3))
+    print(json.dumps({"root" : root, "nodes": r["nodes"], "weights": weights,  "poly": p["poly"]}, indent=3))
 
         
 
