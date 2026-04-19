@@ -57,7 +57,13 @@ We provide a script `tools/compile.py` which implements a very unoptimized versi
 python3 tools/compile.py input-polynomial.poly
 ```
 
-This script outputs on `stdout` a json representation of a DNNF computing the multilinear polytope of the input polynomial. This json representation may then be passed to `example.py` (either on the standard output or via a file). It generates a LaTeX document (which can be compiled using LuaLateX) containing a summary of the input polynomial, its encoding in CNF formula, a graphic representation of a smooth DNNF representing it and an extended formulation extracted from the DNNF. The example from the paper $p = -3x_1x_2+4x_4x_5+5x_2x_3x_4x_5x_6$ is directy provided in `tools/example.poly`. 
+This script outputs on `stdout` a json representation of a DNNF computing the multilinear polytope of the input polynomial. 
+
+We use it in the [`tools/example.py`](tools/example.py) file. Running
+```
+python3 tools/compile.py input-polynomial.poly
+```
+generates a LaTeX document (which can be compiled using LuaLateX) containing a summary of the input polynomial, its encoding in CNF formula, a graphic representation of a smooth DNNF representing it and an extended formulation extracted from the DNNF. The example from the paper $p = -3x_1x_2+4x_4x_5+5x_2x_3x_4x_5x_6$ is directy provided in `tools/example.poly` together with its generated LateX output `tools/example.tex` and its compiled form `tools/example.pdf`. 
 
 ### A modified version of d4
 

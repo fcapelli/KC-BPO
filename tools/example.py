@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import sys
-import json
+from compile import *
 
 # normalize a decision DNNF into a proper DNNF
 def normalizeDNNF(dnnf):
@@ -318,13 +318,19 @@ def extended_formulation(dnnf):
     return (orcst,andcst,incst)
         
 def main():
-    f = sys.stdin
-    if len(sys.argv) <= 1:
-        print("Reading standard input", file=sys.stderr)
-    else:
-        f = open(fname)
-    d = json.load(f)
-    poly = d["poly"]
+    if len(sys.argv)<=1:
+        print(f"Usage: {sys.argv[0]} polynomial.poly")
+        exit(1)
+
+    with open(sys.argv[1]) as f:
+        p = parse_poly(f.readlines())
+        f.close()
+    cnf,names,weights = poly2cnf(p)
+    r={}
+    root = dpll(cnf,names,[],r)
+
+    d = {"root" : root, "nodes": r["nodes"], "weights": weights,  "poly": p["poly"]}
+    poly = p["poly"]
     d = normalizeDNNF(d)
     f.close()
 
